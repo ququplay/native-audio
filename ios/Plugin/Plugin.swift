@@ -24,8 +24,9 @@ public class NativeAudio: CAPPlugin {
         self.fadeMusic = false
 
         do {
-            try self.session.setCategory(AVAudioSession.Category.playback)
-            try self.session.setActive(false)
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(AVAudioSession.Category.ambient, mode: AVAudioSession.Mode.default, options: [])
+            try session.setActive(false)
         } catch {
             print("Failed to set session category")
         }
