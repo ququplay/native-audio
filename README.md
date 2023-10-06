@@ -2,12 +2,12 @@
 <h3 align="center">Native Audio</h3>
 <p align="center"><strong><code>@capacitor-community/native-audio</code></strong></p>
 <p align="center">
-  Capacitor community plugin for playing sounds.
+  Capacitor community plugin for playing sounds natively.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2021?style=flat-square" />
-  <a href="https://github.com/capacitor-community/native-audio/actions?query=workflow%3A%22Test+and+Build+Plugin%22"><img src="https://img.shields.io/github/workflow/status/capacitor-community/native-audio/Test%20and%20Build%20Plugin?style=flat-square" /></a>
+  <img src="https://img.shields.io/maintenance/yes/2023?style=flat-square" />
+  <a href="https://github.com/capacitor-community/native-audio/actions?query=workflow%3A%22Test+and+Build+Plugin%22"><img src="https://img.shields.io/github/actions/workflow/status/capacitor-community/native-audio/test-build.yml?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/@capacitor-community/native-audio"><img src="https://img.shields.io/npm/l/@capacitor-community/native-audio?style=flat-square" /></a>
 <br>
   <a href="https://www.npmjs.com/package/@capacitor-community/native-audio"><img src="https://img.shields.io/npm/dw/@capacitor-community/native-audio?style=flat-square" /></a>
@@ -20,7 +20,7 @@
 # Capacitor Native Audio Plugin
 
 Capacitor plugin for native audio engine.
-Capacitor v3 - ✅ Support!
+Capacitor v5 - ✅ Support!
 
 Click on video to see example 💥
 
@@ -237,12 +237,12 @@ preload(options: PreloadOptions) => Promise<void>
 ### play(...)
 
 ```typescript
-play(options: { assetId: string; time: number; }) => Promise<void>
+play(options: { assetId: string; time?: number; }) => Promise<void>
 ```
 
-| Param         | Type                                            |
-| ------------- | ----------------------------------------------- |
-| **`options`** | <code>{ assetId: string; time: number; }</code> |
+| Param         | Type                                             |
+| ------------- | ------------------------------------------------ |
+| **`options`** | <code>{ assetId: string; time?: number; }</code> |
 
 --------------------
 
@@ -370,14 +370,35 @@ isPlaying(options: { assetId: string; }) => Promise<{ isPlaying: boolean; }>
 --------------------
 
 
+### addListener('complete', ...)
+
+```typescript
+addListener(eventName: 'complete', listenerFunc: (event: { assetId: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+```
+
+Listen for asset completed playing event
+
+| Param              | Type                                                  |
+| ------------------ | ----------------------------------------------------- |
+| **`eventName`**    | <code>'complete'</code>                               |
+| **`listenerFunc`** | <code>(event: { assetId: string; }) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+
+**Since:** 5.0.1
+
+--------------------
+
+
 ### Interfaces
 
 
 #### ConfigureOptions
 
-| Prop       | Type                 |
-| ---------- | -------------------- |
-| **`fade`** | <code>boolean</code> |
+| Prop        | Type                 | Description                                       | Default           |
+| ----------- | -------------------- | ------------------------------------------------- | ----------------- |
+| **`fade`**  | <code>boolean</code> | indicating whether or not to fade audio.          | <code>true</code> |
+| **`focus`** | <code>boolean</code> | indicating whether or not to disable mixed audio. | <code>true</code> |
 
 
 #### PreloadOptions
@@ -389,5 +410,12 @@ isPlaying(options: { assetId: string; }) => Promise<{ isPlaying: boolean; }>
 | **`volume`**          | <code>number</code>  |
 | **`audioChannelNum`** | <code>number</code>  |
 | **`isUrl`**           | <code>boolean</code> |
+
+
+#### PluginListenerHandle
+
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 </docgen-api>
