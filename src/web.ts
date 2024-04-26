@@ -1,8 +1,7 @@
-
+import { WebPlugin } from '@capacitor/core';
 
 import { AudioAsset } from './audio-asset';
 import type { ConfigureOptions, PreloadOptions, NativeAudio } from './definitions';
-import {WebPlugin} from "@capacitor/core";
 
 export class NativeAudioWeb extends WebPlugin implements NativeAudio {
   private static readonly FILE_LOCATION: string = 'assets/sounds';

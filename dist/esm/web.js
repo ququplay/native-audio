@@ -1,5 +1,5 @@
+import { WebPlugin } from '@capacitor/core';
 import { AudioAsset } from './audio-asset';
-import { WebPlugin } from "@capacitor/core";
 export class NativeAudioWeb extends WebPlugin {
     async resume(options) {
         const audio = this.getAudioAsset(options.assetId).audio;
