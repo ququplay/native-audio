@@ -18,21 +18,19 @@ export interface NativeAudio {
    *
    * @since 5.0.1
    */
-  addListener(
-    eventName: 'complete',
-    listenerFunc: (event: { assetId: string }) => void
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+  addListener(eventName: 'complete', listenerFunc: (event: { assetId: string }) => void): Promise<PluginListenerHandle>;
 }
 
 export interface ConfigureOptions {
   /**
-   * indicating whether or not to fade audio.
-   * @default true
+   * Indicating whether or not to fade audio.
+   * @default false
    */
   fade?: boolean;
   /**
-   * indicating whether or not to disable mixed audio.
-   * @default true */
+   * Indicating whether or not to disable mixed audio.
+   * @default false
+   */
   focus?: boolean;
 }
 

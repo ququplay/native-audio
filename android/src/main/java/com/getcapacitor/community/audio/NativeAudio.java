@@ -31,7 +31,6 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.Callable;
 
 @CapacitorPlugin(
     permissions = {
@@ -54,9 +53,6 @@ public class NativeAudio extends Plugin implements AudioManager.OnAudioFocusChan
         super.load();
 
         this.audioManager = (AudioManager) getBridge().getActivity().getSystemService(Context.AUDIO_SERVICE);
-        if (this.audioManager != null) {
-            this.audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-        }
     }
 
     @Override
@@ -112,42 +108,28 @@ public class NativeAudio extends Plugin implements AudioManager.OnAudioFocusChan
     public void configure(PluginCall call) {
         initSoundPool();
 
-        if (call.hasOption(OPT_FADE_MUSIC)) this.fadeMusic = call.getBoolean(OPT_FADE_MUSIC);
+        this.fadeMusic = call.getBoolean(OPT_FADE_MUSIC, false);
 
-        if (call.hasOption(OPT_FOCUS_AUDIO) && this.audioManager != null) {
-            if (call.getBoolean(OPT_FOCUS_AUDIO)) {
+        if (this.audioManager != null) {
+            if (call.getBoolean(OPT_FOCUS_AUDIO, false)) {
                 this.audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
             } else {
                 this.audioManager.abandonAudioFocus(this);
             }
         }
+        call.resolve();
     }
 
     @PluginMethod
     public void preload(final PluginCall call) {
-        new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    preloadAsset(call);
-                }
-            }
-        )
-            .start();
+        new Thread(() -> preloadAsset(call)).start();
     }
 
     @PluginMethod
     public void play(final PluginCall call) {
         getBridge()
             .getActivity()
-            .runOnUiThread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        playOrLoop("play", call);
-                    }
-                }
-            );
+            .runOnUiThread(() -> playOrLoop("play", call));
     }
 
     @PluginMethod
@@ -204,14 +186,7 @@ public class NativeAudio extends Plugin implements AudioManager.OnAudioFocusChan
     public void loop(final PluginCall call) {
         getBridge()
             .getActivity()
-            .runOnUiThread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        playOrLoop("loop", call);
-                    }
-                }
-            );
+            .runOnUiThread(() -> playOrLoop("loop", call));
     }
 
     @PluginMethod
@@ -373,8 +348,8 @@ public class NativeAudio extends Plugin implements AudioManager.OnAudioFocusChan
     }
 
     private void preloadAsset(PluginCall call) {
-        double volume = 1.0;
-        int audioChannelNum = 1;
+        double volume = call.getDouble(VOLUME, 1.0);
+        int audioChannelNum = call.getInt(AUDIO_CHANNEL_NUM, 1);
 
         try {
             initSoundPool();
@@ -398,18 +373,6 @@ public class NativeAudio extends Plugin implements AudioManager.OnAudioFocusChan
 
                 String fullPath = assetPath; //"raw/".concat(assetPath);
 
-                if (call.getDouble(VOLUME) == null) {
-                    volume = 1.0;
-                } else {
-                    volume = call.getDouble(VOLUME, 0.5);
-                }
-
-                if (call.getInt(AUDIO_CHANNEL_NUM) == null) {
-                    audioChannelNum = 1;
-                } else {
-                    audioChannelNum = call.getInt(AUDIO_CHANNEL_NUM);
-                }
-
                 AssetFileDescriptor assetFileDescriptor;
                 if (isUrl) {
                     File f = new File(new URI(fullPath));
@@ -417,8 +380,10 @@ public class NativeAudio extends Plugin implements AudioManager.OnAudioFocusChan
                     assetFileDescriptor = new AssetFileDescriptor(p, 0, -1);
                 } else {
                     if (fullPath.startsWith("content")) {
-                        assetFileDescriptor =
-                            getBridge().getActivity().getContentResolver().openAssetFileDescriptor(Uri.parse(fullPath), "r");
+                        assetFileDescriptor = getBridge()
+                            .getActivity()
+                            .getContentResolver()
+                            .openAssetFileDescriptor(Uri.parse(fullPath), "r");
                     } else {
                         Context ctx = getBridge().getActivity().getApplicationContext();
                         AssetManager am = ctx.getResources().getAssets();
@@ -451,13 +416,10 @@ public class NativeAudio extends Plugin implements AudioManager.OnAudioFocusChan
                 if (LOOP.equals(action) && asset != null) {
                     asset.loop();
                 } else if (asset != null) {
-                    asset.play(
-                        time,
-                        () -> {
-                            call.resolve();
-                            return null;
-                        }
-                    );
+                    asset.play(time, () -> {
+                        call.resolve();
+                        return null;
+                    });
                 }
             }
         } catch (Exception ex) {

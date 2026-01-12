@@ -2,30 +2,20 @@
 <h3 align="center">Native Audio</h3>
 <p align="center"><strong><code>@capacitor-community/native-audio</code></strong></p>
 <p align="center">
-  Capacitor community plugin for playing sounds natively.
+  ⚡ Capacitor plugin for playing sounds natively.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/maintenance/yes/2023?style=flat-square" />
-  <a href="https://github.com/capacitor-community/native-audio/actions?query=workflow%3A%22Test+and+Build+Plugin%22"><img src="https://img.shields.io/github/actions/workflow/status/capacitor-community/native-audio/test-build.yml?style=flat-square" /></a>
+  <img src="https://img.shields.io/maintenance/yes/2026?style=flat-square" />
+  <a href="https://github.com/capacitor-community/native-audio/actions?query=workflow%3A%22CI%22"><img src="https://img.shields.io/github/actions/workflow/status/capacitor-community/native-audio/ci.yml?branch=master&style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/@capacitor-community/native-audio"><img src="https://img.shields.io/npm/l/@capacitor-community/native-audio?style=flat-square" /></a>
 <br>
   <a href="https://www.npmjs.com/package/@capacitor-community/native-audio"><img src="https://img.shields.io/npm/dw/@capacitor-community/native-audio?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/@capacitor-community/native-audio"><img src="https://img.shields.io/npm/v/@capacitor-community/native-audio?style=flat-square" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href="#contributors-"><img src="https://img.shields.io/badge/all%20contributors-6-orange?style=flat-square" /></a>
+<a href="#contributors-"><img src="https://img.shields.io/badge/all%20contributors-2-orange?style=flat-square" /></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 </p>
-
-# Capacitor Native Audio Plugin
-
-Capacitor plugin for native audio engine.
-Capacitor v5 - ✅ Support!
-
-Click on video to see example 💥
-
-[![YouTube Example](https://img.youtube.com/vi/XpUGlWWtwHs/0.jpg)](https://www.youtube.com/watch?v=XpUGlWWtwHs)
-
 
 ## Maintainers
 
@@ -33,9 +23,12 @@ Click on video to see example 💥
 | ------------- | ------------------------------------------- | ----------------------------------- |
 | Maxim Bazuev  | [bazuka5801](https://github.com/bazuka5801) | [Telegram](https://t.me/bazuka5801) |
 
-Mainteinance Status: Actively Maintained
+## Demo
+
+[![YouTube Example](https://img.youtube.com/vi/XpUGlWWtwHs/0.jpg)](https://www.youtube.com/watch?v=XpUGlWWtwHs)
 
 ## Preparation
+
 All audio place in specific platform folder
 
 Andoid: `android/app/src/assets`
@@ -96,6 +89,8 @@ No configuration required for this plugin.
 ## Usage
 
 [Example repository](https://github.com/bazuka5801/native-audio-example)
+OR
+another complete Ionic/Angular application demonstrating every plugin method is available in the **example-app** directory
 
 ```typescript
 import {NativeAudio} from '@capacitor-community/native-audio'
@@ -373,7 +368,7 @@ isPlaying(options: { assetId: string; }) => Promise<{ isPlaying: boolean; }>
 ### addListener('complete', ...)
 
 ```typescript
-addListener(eventName: 'complete', listenerFunc: (event: { assetId: string; }) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(eventName: 'complete', listenerFunc: (event: { assetId: string; }) => void) => Promise<PluginListenerHandle>
 ```
 
 Listen for asset completed playing event
@@ -383,7 +378,7 @@ Listen for asset completed playing event
 | **`eventName`**    | <code>'complete'</code>                               |
 | **`listenerFunc`** | <code>(event: { assetId: string; }) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 **Since:** 5.0.1
 
@@ -395,10 +390,10 @@ Listen for asset completed playing event
 
 #### ConfigureOptions
 
-| Prop        | Type                 | Description                                       | Default           |
-| ----------- | -------------------- | ------------------------------------------------- | ----------------- |
-| **`fade`**  | <code>boolean</code> | indicating whether or not to fade audio.          | <code>true</code> |
-| **`focus`** | <code>boolean</code> | indicating whether or not to disable mixed audio. | <code>true</code> |
+| Prop        | Type                 | Description                                       | Default            |
+| ----------- | -------------------- | ------------------------------------------------- | ------------------ |
+| **`fade`**  | <code>boolean</code> | Indicating whether or not to fade audio.          | <code>false</code> |
+| **`focus`** | <code>boolean</code> | Indicating whether or not to disable mixed audio. | <code>false</code> |
 
 
 #### PreloadOptions
