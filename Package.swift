@@ -2,11 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "CapacitorCommunityNativeAudio",
+    name: "QuquplayNativeAudio",
     platforms: [.iOS(.v15)],
     products: [
         .library(
-            name: "CapacitorCommunityNativeAudio",
+            name: "QuquplayNativeAudio",
             targets: ["NativeAudio"])
     ],
     dependencies: [
